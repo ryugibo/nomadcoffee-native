@@ -14,9 +14,11 @@ const SEE_COFFEESHOPS = gql`
         username
       }
       photos {
+        id
         url
       }
       categories {
+        id
         name
       }
     }
@@ -35,134 +37,18 @@ const Home = () => {
         style={{ flex: 1, borderTopWidth: 1, borderBottomWidth: 1, margin: 10 }}
       >
         {coffeeShop.photos.length > 0 ? (
-          <ScrollView horizontal>
-            {coffeeShop.photos.map((photo) => {
+          <ScrollView horizontal style={{ flex: 1 }}>
+            {coffeeShop.photos.map(({ id, url }) => {
               return (
                 <Image
+                  key={id}
                   style={{
                     width: 100,
                     height: 100,
                     marginRight: 10,
                     backgroundColor: "grey",
                   }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
-                />
-              );
-            })}
-            {coffeeShop.photos.map((photo) => {
-              return (
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={photo.url}
+                  source={url}
                 />
               );
             })}
@@ -170,9 +56,10 @@ const Home = () => {
         ) : null}
         <Text style={{ fontSize: 25 }}>{coffeeShop.name}</Text>
         <View style={{ flex: 1, flexDirection: "row" }}>
-          {coffeeShop.categories.map(({ name }) => {
+          {coffeeShop.categories.map(({ id, name }) => {
             return (
               <View
+                key={id}
                 style={{
                   marginHorizontal: 5,
                   paddingHorizontal: 15,
@@ -192,7 +79,6 @@ const Home = () => {
     await refetch();
     setRefreshing(false);
   };
-  console.log(data);
   return loading ? (
     <ActivityIndicator color="white" />
   ) : (
