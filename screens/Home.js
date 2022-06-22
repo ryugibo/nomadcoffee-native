@@ -4,8 +4,8 @@ import { FlatList, View, Text, Image, ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native";
 
 const SEE_COFFEESHOPS = gql`
-  query seeCoffeeShops($page: Int!) {
-    seeCoffeeShops(page: $page) {
+  query seeCoffeeShops($offset: Int!) {
+    seeCoffeeShops(offset: $offset) {
       id
       name
       latitude
@@ -28,7 +28,7 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { data, loading, refetch, fetchMore } = useQuery(SEE_COFFEESHOPS, {
     variables: {
-      page: 1,
+      offset: 0,
     },
   });
   const renderCoffeeShop = ({ item: coffeeShop }) => {
@@ -36,24 +36,22 @@ const Home = () => {
       <View
         style={{ flex: 1, borderTopWidth: 1, borderBottomWidth: 1, margin: 10 }}
       >
-        {coffeeShop.photos.length > 0 ? (
-          <ScrollView horizontal style={{ flex: 1 }}>
-            {coffeeShop.photos.map(({ id, url }) => {
-              return (
-                <Image
-                  key={id}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 10,
-                    backgroundColor: "grey",
-                  }}
-                  source={url}
-                />
-              );
-            })}
-          </ScrollView>
-        ) : null}
+        <ScrollView horizontal style={{ height: 100, flex: 1 }}>
+          {coffeeShop.photos.map(({ id, url }) => {
+            return (
+              <Image
+                key={id}
+                style={{
+                  width: 100,
+                  height: 100,
+                  marginRight: 10,
+                  backgroundColor: "grey",
+                }}
+                source={url}
+              />
+            );
+          })}
+        </ScrollView>
         <Text style={{ fontSize: 25 }}>{coffeeShop.name}</Text>
         <View style={{ flex: 1, flexDirection: "row" }}>
           {coffeeShop.categories.map(({ id, name }) => {
@@ -84,13 +82,13 @@ const Home = () => {
   ) : (
     <FlatList
       onEndReachedThreshold={0.02}
-      onEndReached={() =>
+      onEndReached={() => {
         fetchMore({
           variables: {
-            page: 1 + (data?.seeCoffeeShops?.length || 0) / 5,
+            offset: data?.seeCoffeeShops?.length,
           },
-        })
-      }
+        });
+      }}
       refreshing={refreshing}
       onRefresh={refresh}
       style={{ width: "100%" }}
