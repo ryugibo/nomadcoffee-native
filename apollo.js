@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
+import { offsetLimitPagination } from "@apollo/client/utilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const isLoggedInVar = makeVar(false);
@@ -20,8 +21,16 @@ export const logUserOut = async () => {
 };
 
 const client = new ApolloClient({
-  uri: "https://ce37-114-129-90-158.jp.ngrok.io/graphql",
-  cache: new InMemoryCache(),
+  uri: "https://b916-114-129-90-158.jp.ngrok.io/graphql",
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          seeCoffeeShops: offsetLimitPagination(),
+        },
+      },
+    },
+  }),
 });
 
 export default client;
